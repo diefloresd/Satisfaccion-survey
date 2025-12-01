@@ -1,0 +1,211 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Encuesta de Satisfacción — Fever Pedregal</title>
+
+<style>
+  :root{
+    --accent:#00aaff;
+    --glass: rgba(0,0,0,0.55);
+    --card-radius:14px;
+    --white-alpha: rgba(255,255,255,0.95);
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #000 url("https://images.unsplash.com/photo-1571019613800-85f342c55f75?auto=format&fit=crop&w=1920&q=80") no-repeat center center fixed;
+    background-size:cover;
+    color: white;
+  }
+
+  .shell{
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;   /* AHORA CENTRADO VERTICAL */
+    align-items:center;       /* CENTRADO HORIZONTAL */
+    backdrop-filter: blur(2px);
+    padding:28px 16px 110px;
+    box-sizing:border-box;
+  }
+
+  header{
+    text-align:center;
+    text-shadow: 0 3px 18px rgba(0,0,0,0.8);
+    margin-bottom: 20px;
+  }
+
+  header h1{
+    margin:0;
+    font-size: clamp(22px, 3.6vw, 30px);
+  }
+
+  /* Main faces grid */
+  .faces-wrap{
+    width:100%;
+    max-width:1100px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+
+  .faces {
+    display:flex;
+    gap:28px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .face-card{
+    width:160px;
+    padding:18px;
+    border-radius:var(--card-radius);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.28));
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    cursor:pointer;
+    transition: transform .16s ease, box-shadow .16s ease;
+  }
+
+  .face-card:hover{
+    transform: translateY(-6px);
+  }
+
+  .svg-face{ width:84px; height:84px; }
+
+  .face-label{
+    font-size:13px;
+    color:#e8f6ff;
+  }
+
+  .counter{
+    font-weight:700;
+    font-size:18px;
+    color:var(--white-alpha);
+    background: rgba(255,255,255,0.04);
+    padding:6px 12px;
+    border-radius:999px;
+  }
+
+  #resetBtn {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 22px;
+    z-index: 1200;
+    background: rgba(255,255,255,0.95);
+    color: #001218;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: none;
+    font-weight: 800;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body>
+  <div class="shell">
+
+    <header>
+      <h1>Encuesta de Satisfacción — Fever Pedregal</h1>
+      <p style="color:#ddd; margin-top:8px;">Selecciona la cara que represente tu experiencia</p>
+    </header>
+
+    <section class="faces-wrap">
+      <div class="faces">
+
+        <!-- Muy malo -->
+        <div class="face-card" onclick="selectFace('muy_malo')">
+          <svg class="svg-face" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="2"/>
+            <path d="M34 40 q3 -6 8 0" stroke="white" fill="none"/>
+            <path d="M66 40 q-3 -6 -8 0" stroke="white" fill="none"/>
+            <path d="M34 68 q16 -12 32 0" stroke="white" fill="none"/>
+          </svg>
+          <div class="face-label">Muy malo</div>
+          <div class="counter" id="count-muy_malo">0</div>
+        </div>
+
+        <!-- Regular -->
+        <div class="face-card" onclick="selectFace('malo')">
+          <svg class="svg-face" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="2"/>
+            <circle cx="36" cy="42" r="3.5" fill="white"/>
+            <circle cx="64" cy="42" r="3.5" fill="white"/>
+            <path d="M34 66 h32" stroke="white" stroke-width="2.4"/>
+          </svg>
+          <div class="face-label">Regular</div>
+          <div class="counter" id="count-malo">0</div>
+        </div>
+
+        <!-- Bien -->
+        <div class="face-card" onclick="selectFace('bien')">
+          <svg class="svg-face" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="2"/>
+            <path d="M34 40 q6 6 12 0" stroke="white" fill="none"/>
+            <path d="M66 40 q-6 6 -12 0" stroke="white" fill="none"/>
+            <path d="M36 64 q14 10 28 0" stroke="white" fill="none"/>
+          </svg>
+          <div class="face-label">Bien</div>
+          <div class="counter" id="count-bien">0</div>
+        </div>
+
+        <!-- Excelente -->
+        <div class="face-card" onclick="selectFace('excelente')">
+          <svg class="svg-face" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="2"/>
+            <path d="M32 40 q8 10 18 0" stroke="white" fill="none"/>
+            <path d="M68 40 q-8 10 -18 0" stroke="white" fill="none"/>
+            <path d="M30 60 q20 24 40 0" stroke="white" fill="none"/>
+          </svg>
+          <div class="face-label">Excelente</div>
+          <div class="counter" id="count-excelente">0</div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <button id="resetBtn" onclick="resetCounters()">Reiniciar contadores</button>
+
+<script>
+  const defaultCounts = { muy_malo:0, malo:0, bien:0, excelente:0 };
+  let counts = JSON.parse(localStorage.getItem('ic_counts')) || defaultCounts;
+
+  function renderCounts(){
+    document.getElementById('count-muy_malo').textContent = counts.muy_malo;
+    document.getElementById('count-malo').textContent = counts.malo;
+    document.getElementById('count-bien').textContent = counts.bien;
+    document.getElementById('count-excelente').textContent = counts.excelente;
+  }
+  renderCounts();
+
+  function selectFace(key){
+    counts[key]++;
+    localStorage.setItem('ic_counts', JSON.stringify(counts));
+    renderCounts();
+    alert('¡Gracias por tu respuesta!');
+  }
+
+  function resetCounters(){
+    if(confirm("¿Seguro que deseas reiniciar los contadores?")){
+      counts = {...defaultCounts};
+      localStorage.setItem('ic_counts', JSON.stringify(counts));
+      renderCounts();
+    }
+  }
+</script>
+
+</body>
+</html>
+
